@@ -1,0 +1,207 @@
+<div class="panel panel-default transparant" *ngIf="text">
+  <div class="panel-heading">
+    <span class="fa fa-user-o fa-spacing-title"></span>{{profile?.userName}}
+    <!-- Edit button (go to profile) -->
+    <div class="pull-right"  *ngIf="isCurrentUser">
+      <button
+        type="button"
+        class="btn btn-warning"
+        (click)="onEditProfile()">
+        <span class="fa fa-pencil"></span> {{text["Edit"]}}
+      </button>
+    </div>
+    <!-- Follow / Unfollow button -->
+    <div class="pull-right" *ngIf="!isCurrentUser && profile">
+      <button 
+        *ngIf="!isCurrentlyFollowing"
+        type="button"
+        class="btn btn-success"
+        (click)="onFollowUser(profile._id)">
+        <span class="fa fa-user-plus"></span> {{text["Follow"]}} '{{profile?.userName}}'
+      </button>
+      <div *ngIf="isCurrentlyFollowing">
+        <div class="following">
+          <span class="fa fa-check"></span> {{text['Following']}}
+          <button
+            type="button"
+            (click)="onUnfollowUser(profile._id)"
+            class="btn btn-warning btn-sm">
+            <span class="fa fa-times"></span> {{text["Unfollow"]}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-2">
+        <div class="gravatar col-xs-2">
+          <img kmGravatar [hash]="profile.emailHash" [width]="96" *ngIf="profile">
+        </div>
+      </div>
+      <div class="col-xs-10 data">
+        <div class="row " *ngIf="profile?.profile?.realName">
+          <label 
+            for="bio" 
+            class="control-label col-xs-3">
+            {{text['RealName']}}
+          </label>
+          <div class="col-xs-9">
+            {{profile.profile.realName}}
+          </div>
+        </div>
+        <div class="row" *ngIf="profile?.profile?.location">
+          <label 
+            for="location" 
+            class="control-label col-xs-3">
+            {{text['Location']}}
+          </label>
+          <div class="col-xs-9">
+            {{profile.profile.location}}
+          </div>
+        </div>
+        <div class="row" *ngIf="profile?.profile?.nativeLan">
+          <label 
+            for="language" 
+            class="control-label col-xs-3">
+            {{text['NativeLanguage']}}
+          </label>
+          <div class="col-xs-9">
+            {{profile.profile.nativeLan}}
+          </div>
+        </div>
+        <div class="row" *ngIf="profile?.profile?.bio">
+          <label 
+            for="bio" 
+            class="control-label col-xs-3">
+            {{text['Bio']}}
+          </label>
+          <div class="col-xs-9">
+            {{profile.profile.bio}}
+          </div>
+        </div>
+        <div class="row">
+          <label 
+            for="courses" 
+            class="control-label col-xs-3">
+            {{text['ProfileCourses']}}
+          </label>
+          <div class="col-xs-9">
+            {{text["Learning"]}}: {{courses.learning?.length || '-'}}
+            <button 
+              *ngIf="courses.learning?.length > 0 && !showCoursesLearning"
+              type="button"
+              class="btn btn-info btn-xs"
+              (click)="onShowCourses('learning')">
+              <span class="fa fa-eye"></span> {{text["ShowCourses"]}}
+            </button>
+            <button *ngIf="showCoursesLearning"
+              type="button"
+              class="btn btn-warning btn-xs"
+              (click)="onCloseCourses('learning')">
+              <span class="fa fa-times"></span> {{text["Close"]}}
+            </button>
+            <div *ngIf="showCoursesLearning">
+              <div *ngFor="let course of courses.learning">
+                <km-course-bar
+                  [course]="course"
+                  [text]="text">
+                </km-course-bar>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-9 col-xs-offset-3">
+            {{text["Created"]}}:  {{courses.teaching?.length || '-'}}
+            <button 
+              *ngIf="courses.teaching?.length > 0 && !showCoursesTeaching"
+              type="button"
+              class="btn btn-info btn-xs"
+              (click)="onShowCourses('teaching')">
+              <span class="fa fa-eye"></span> {{text["ShowCourses"]}}
+            </button>
+            <button *ngIf="showCoursesTeaching"
+              type="button"
+              class="btn btn-warning btn-xs"
+              (click)="onCloseCourses('teaching')">
+              <span class="fa fa-times"></span> {{text["Close"]}}
+            </button>
+            <div *ngIf="showCoursesTeaching">
+              <div *ngFor="let course of courses.teaching">
+                <km-course-bar
+                  [course]="course"
+                  [text]="text">
+                </km-course-bar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label 
+            for="joinDate" 
+            class="control-label col-xs-3">
+            {{text['JoinDate']}}
+          </label>
+          <div class="col-xs-9">
+            {{profile?.dtJoined | date: 'dd'}} {{text[profile?.dtJoined | date: 'MMMM']}} {{profile?.dtJoined | date: 'yyyy'}}
+          </div>
+        </div>
+        <div class="row" *ngIf="network">
+          <label 
+            for="network" 
+            class="control-label col-xs-3">
+            {{text['Network']}}
+          </label>
+          <div class="col-xs-9">
+            {{text['Follows']}} {{network?.follows?.length || text['noone']}} {{ network?.follows?.length === 1 ? text['person'] : (network?.follows?.length === 0 ? '' : text['people'])}}
+          </div>
+          <div class="col-xs-9 col-xs-offset-3">
+            {{text['FollowedBy']}} {{network?.followed?.length || text['noone']}}
+            <span *ngIf="network?.followed?.length">
+              {{network?.followed?.length === 1 ? text['person'] : text['people']}}
+            </span>
+          </div>
+          <div class="col-xs-9 col-xs-offset-3" *ngIf="publicNetwork?.length > 0">
+            <button *ngIf="!networkShown"
+              type="button"
+              class="btn btn-info btn-xs"
+              (click)="onShowNetwork()">
+              <span class="fa fa-eye"></span> {{text["ShowNetwork"]}}
+            </button>
+            <div *ngIf="networkShown">
+              <km-compact-profile *ngFor="let user of publicNetwork"
+                  [profile]="user"
+                  [text]="text">
+              </km-compact-profile>
+              <div class="clearfix"></div>
+              <button 
+                type="button"
+                class="btn btn-warning btn-xs"
+                (click)="onCloseNetwork()">
+                <span class="fa fa-times"></span> {{text["Close"]}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!isCurrentUser && isCurrentlyFollowing && isCurrentlyFollowed && profile">
+          <button [style.display]="messageShown ? 'none' : 'inline-block'"
+            type="button"
+            (click)="onCreateMessage(msgField)"
+            class="btn btn-primary btn-sm">
+            <span class="fa fa-envelope"></span> {{text["SendMessage"]}}
+          </button>
+          <div [style.display]="messageShown ? 'block' : 'none'">
+            <km-message
+              [sendTxt]="text['Send']"
+              (send)="onSendMessage($event)"
+              #msgField>
+            </km-message>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div  class="info-msg">
+    <km-info-msg [msg]="infoMsg">
+    </km-info-msg>
+  </div>
+</div>

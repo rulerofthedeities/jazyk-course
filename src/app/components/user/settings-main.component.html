@@ -1,0 +1,93 @@
+<form *ngIf="isReady"
+  [formGroup]="mainForm"
+  class="form-horizontal col-xs-9">
+  <!-- Interface Lan -->
+  <div class="form-group">
+    <label
+      for="lan"
+      class="control-label col-xs-4">
+      {{text["InterfaceLan"]}}
+    </label>
+    <div class="col-xs-8">
+      <select
+        class="form-control"
+        id="lan"
+        (change)="onChangeField()"
+        formControlName="lan">
+        <option
+          *ngFor="let lan of formData.lans"
+          [value]="lan.code">
+          {{lan.nativeName}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <!-- My Lan -->
+  <div class="form-group">
+    <label
+      for="mylan"
+      class="control-label col-xs-4">
+      {{text["MyLan"]}}
+    </label>
+    <div class="col-xs-8">
+      <select
+        class="form-control"
+        id="myLan"
+        (change)="onChangeField()"
+        formControlName="myLan">
+        <option
+          *ngFor="let lan of formData.myLans"
+          [value]="lan.code">
+          {{lan.nativeName}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <!-- Background -->
+  <div class="form-group">
+    <label
+      for="background"
+      class="control-label col-xs-4">
+      {{text["Background"]}}
+    </label>
+    <div class="col-xs-8">
+      <km-toggle id="countdown"
+        [toggle]="mainForm.value.background"
+        (toggled)="onSetFlag('background', $event)">
+      </km-toggle>
+    </div>
+  </div>
+  <!-- Gender -->
+  <div class="form-group">
+    <label
+      for="background"
+      class="control-label col-xs-4">
+      {{text["RankGender"]}}
+    </label>
+    <div class="col-xs-8">
+      <span class="fa fa-male fa-spacing-title gender"
+        (click)="onSetGender('m')"
+        [class.gen-selected]="mainForm.value.gender === 'm'">
+      </span>
+      <span class="fa fa-female gender"
+        (click)="onSetGender('f')"
+        [class.gen-selected]="mainForm.value.gender === 'f'">
+      </span>
+    </div>
+  </div>
+  <!-- Button -->
+  <div class="form-group buttons">
+    <div class="col-xs-9 col-xs-offset-3">
+      <button type="button" class="btn btn-success btn-lg"
+        [disabled]="!mainForm.valid || !mainForm.dirty"
+        (click)="onUpdateSettings(mainForm)">
+        {{text["UpdateSettings"]}}
+      </button>
+    </div>
+  </div>
+
+  <div class="info-msg">
+    <km-info-msg [msg]="infoMsg">
+    </km-info-msg>
+  </div>
+</form>

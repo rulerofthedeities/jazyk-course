@@ -1,0 +1,118 @@
+<article>
+  <div class="panel panel-default panel-book" [class.dashboard]="tpe==='home'">
+    <div class="panel-body" [class.read]="isBookRead">
+      <div class="corner-ribbon top-right yellow shadow" *ngIf="isNewBook && tpe !== 'home'">
+        {{text["New"]}}!
+      </div>
+      <div class="image" [class.img-border]="!!book?.img">
+        <img src="/assets/img/flags/{{book.lanRegion || book.lanCode}}-circle.png" class="circle-flag">
+        <img src="{{book?.img || defaultImage}}" class="book-img">
+        <span class="img-text" *ngIf="!book?.img">{{book.title}}</span>
+        <span class="img-author" *ngIf="!book?.img">{{book.author}}{{!!book.author2 ? ' & ' + book.author2 : ''}}</span>
+      </div>
+      <div class="book">
+        <div class="index-nr pull-right" *ngIf="tpe !== 'home'">
+          {{nr}}
+        </div>
+        <h3>
+          <img src="/assets/img/flags/{{book.lanRegion || book.lanCode}}.png" class="flag from"><span class="fa fa-arrow-right flag-from"></span><img src="/assets/img/flags/{{userLanCode}}.png" class="flag">
+          {{book.title}}<span class="fa fa-info-circle intro-icon" *ngIf="book.intro" (click)="onToggleIntro()"></span>
+          <small>{{book.series}}</small>
+        </h3>
+        <div class="intro" [style.display]="showIntro ? 'block' : 'none'">
+          {{book.intro}}
+        </div>
+        <div class="pie-content" style="position:relative;">
+          <div class="pie-chart" *ngIf="nrOfSentencesDone > 0">
+            <km-pie-chart
+              [data]="userData">
+            </km-pie-chart>
+          </div>
+        </div>
+        <div class="author">
+          <km-book-tpe
+            [tpe]="book.tpe"
+            [text]="text">
+          </km-book-tpe>
+          {{text[book.tpe]}} <span *ngIf="book.author">{{text["by"]}}</span>
+          <span *ngIf="!!book.link">&nbsp;<a href="{{book.link}}" target="_blank">{{book.author}}</a></span>
+          <span *ngIf="!book.link">&nbsp;{{book.author}}</span>
+          <span *ngIf="!!book.link2">&nbsp;&&nbsp;<a href="{{book.link2}}" target="_blank">{{book.author2}}</a></span>
+          <span *ngIf="!!book.author2 && !book.link2">&nbsp;&&nbsp;{{book.author2}}</span>
+          <span *ngIf="!!book.year">&nbsp;({{book.year}})</span>
+          <a *ngIf="licenseUrl" href="{{licenseUrl}}" target="_blank">
+            <ng-container
+              *ngTemplateOutlet="copyright;context:{
+                license: book.license,
+                tooltip: text[book.license]
+              }">
+            </ng-container>
+          </a>
+          <span *ngIf="!licenseUrl">
+            <ng-container
+              *ngTemplateOutlet="copyright;context:{
+                license: book.license,
+                tooltip: text[book.license]
+              }">
+            </ng-container>
+          </span>
+        </div>
+        <div class="buttons" *ngIf="book.lanCode !== userLanCode">
+          <button *ngIf="!isBookRead"
+            type="button"
+            class="btn btn-success"
+            (click)="onStartReading()">
+            <span class="fa fa-arrow-right fa-spacing"></span>
+            {{isStarted ? text["ContinueReading"]: text["StartReading"]}}
+          </button>
+          <div class="book-read" *ngIf="isBookRead">
+            <span class="fa fa-check"></span>
+            {{text['BookRead']}}
+          </div>
+        </div>
+        <div class="stop pull-right" *ngIf="isSubscribed && tpe==='my'">
+          <button type="button" class="btn btn-default"
+            (click)="onStopReading()">
+            <span class="fa fa-times-circle fa-spacing"></span>
+            {{text["RemoveFromList"]}}
+          </button>
+        </div>
+        <div class="info" *ngIf="tpe !== 'home'">
+          <div class="sentences">
+            {{book.difficulty?.nrOfSentences | score}} {{text["sentences"]}}
+            <span *ngIf="translationData?.count" class="translations">
+              ({{translationData.count}} / {{book.difficulty?.nrOfUniqueSentences}} {{text["translated"]}})
+            </span>
+          </div>
+          <div class="words">
+            {{book.difficulty?.nrOfUniqueWords | score}} {{text["uniquewords"]}} ({{book.difficulty?.nrOfWords | score}} {{text["intotal"]}})
+          </div>
+          {{text["Difficulty"]}}: <span class="difficulty" [ngStyle]="{width:difficultyWidth + 'px'}"></span>
+          ({{difficultyPerc}}%)
+        </div>
+        <div class="progress" [class.progress-min]="percDone < 5" *ngIf="isStarted">
+          <div
+            class="progress-bar progress-bar-primary progress-bar-striped"
+            role="progressbar"
+            [attr.aria-valuenow]="nrOfSentencesDone"
+            aria-valuemin="0"
+            [attr.aria-valuemax]="book.difficulty?.nrOfSentences"
+            [style.width.%]="percDone">
+            <span>
+              {{nrOfSentencesDone}}/{{book.difficulty?.nrOfSentences}}&nbsp;({{percDone}}%)
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<ng-template #copyright let-license=license let-tooltip=tooltip>
+  <span *ngIf="license"
+    class="fa fa-copyright"
+    [tooltip]="tooltip"
+    [tooltipPlacement]="'top'"
+    >
+  </span>
+</ng-template>

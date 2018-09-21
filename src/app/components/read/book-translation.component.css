@@ -1,0 +1,59 @@
+.translations-container {
+  max-height: 100px;
+  overflow-y: scroll;
+  border: 1px solid #333;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+.translation-item {
+  padding: 5px 10px;
+}
+.translation-item:nth-child(2n) {
+  background-color:#fafafa;
+}
+.translation-item:hover {
+  background-color: #eee;
+}
+.translation-new-note {
+  height: 26px;
+  padding-top: 0;
+  font-style: italic;
+}
+.translation-send {
+  vertical-align: top;
+}
+.translation-note {
+  font-style: italic;
+  font-size: 12px;
+}
+.new-translation {
+  margin-top: 3px;
+}
+.edit-icon {
+  float: right;
+  color: #428bca;
+}
+.btn-thumb {
+  cursor: default;
+}
+.btn-up:hover, .thumbed-up {
+  background-color: #32CD32;
+  border-color: #32CD32;
+}
+.btn-down:hover, .thumbed-down {
+  background-color: red;
+  border-color: red;
+}
+.btn-up, .btn-down {
+  cursor: pointer;
+}
+.vote-block {
+  float: left;
+}
+.translation-block {
+  display: block;
+}
+@media screen and (max-width: 767px) {
+  .translation-send {float: left;width: 100%;}
+  .translation-send > .btn {width: 100%;}
+}

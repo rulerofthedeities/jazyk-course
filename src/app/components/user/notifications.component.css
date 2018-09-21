@@ -1,0 +1,37 @@
+.list-group-item {
+  cursor: pointer;
+}
+.read {
+  margin-right: 10px;
+}
+.fa-circle {
+  color: red;
+}
+.badge {
+  background-color: #ababab;
+  border-radius: 4px;
+}
+.unread {
+  font-weight: bold;
+}
+.fa-times {
+  cursor: pointer;
+  font-size: 32px;
+}
+.btnicon {
+  padding: 2px 6px;
+  width: 28px;
+}
+.btn-delete {
+  margin-left: 8px;
+  margin-right: -7px;
+}
+.badgeMargin {
+  margin-right: 24px;
+}
+.dropdown-menu li {
+  cursor: pointer;
+}
+.buttons {
+  padding-left: 15px;
+}

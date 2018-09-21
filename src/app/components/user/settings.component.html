@@ -1,0 +1,78 @@
+<div class="panel panel-default transparant">
+  <div class="panel-heading">
+    <span class="fa fa-sliders fa-spacing-title"></span>{{text["Settings"]}} - 
+    <span [ngSwitch]="tab">
+      <span *ngSwitchCase="'main'">
+        {{text["Main"]}}
+      </span>
+      <span *ngSwitchCase="'config'">
+        {{text["Learn"]}}
+      </span>
+      <span *ngSwitchCase="'password'">
+        {{text["Password"]}}
+      </span>
+      <span *ngSwitchCase="'email'">
+        {{text["Email"]}}
+      </span>
+      <span *ngSwitchCase="'deactivate'">
+        {{text["Deactivate"]}}
+      </span>
+    </span>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group settings-menu col-xs-3">
+      <li class="list-group-item"
+        (click)="onChangeTab('main')"
+        [class.active]="tab==='main'">
+        <span class="fa fa-cog"></span> {{text["Main"]}}
+      </li>
+      <li class="list-group-item"
+        (click)="onChangeTab('config')"
+        [class.active]="tab==='config'">
+        <span class="fa fa-book"></span> {{text["Learn"]}}
+      </li>
+      <li class="list-group-item"
+        (click)="onChangeTab('password')"
+        [class.active]="tab==='password'">
+        <span class="fa fa-key"></span> {{text["Password"]}}
+      </li>        
+      <li class="list-group-item"
+        (click)="onChangeTab('email')"
+        [class.active]="tab==='email'">
+        <span class="fa fa-envelope"></span> {{text["Email"]}}
+      </li>
+      <li class="list-group-item deactivate"
+        (click)="onChangeTab('deactivate')"
+        [class.active]="tab==='deactivate'">
+        <span class="fa fa-times"></span> {{text["Deactivate"]}}
+      </li>
+    </ul>
+    <div [ngSwitch]="tab">
+      <!-- CONFIG TAB -->
+      <div *ngSwitchCase="'config'">
+        <km-user-settings-learn
+          [text]="text">
+        </km-user-settings-learn>
+      </div>
+      <div *ngSwitchCase="'main'">
+        <km-user-settings-main
+          [text]="text">
+        </km-user-settings-main>
+      </div>
+      <!-- PASSWORD TAB -->
+      <div *ngSwitchCase="'password'">
+        <km-user-settings-password
+          [text]="text">
+        </km-user-settings-password>
+      </div>
+      <!-- EMAIL TAB -->
+      <div *ngSwitchCase="'email'">
+        
+      </div>
+      <!-- DEACTIVATE TAB -->
+      <div *ngSwitchCase="'deactivate'">
+        
+      </div>
+    </div>
+  </div>
+</div>

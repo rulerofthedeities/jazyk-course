@@ -1,0 +1,42 @@
+:host {
+  font-size: 20px;
+}
+.total {
+  border: 1px solid black;
+  margin: -8px;
+  padding: 7px;
+}
+.trophies, .books {
+  margin-bottom: 32px !important;
+}
+.rank {
+  font-size: 24px;
+  margin-bottom: 32px !important;
+}
+.rank .panel-body {
+  padding-top: 0;
+  cursor: pointer;
+}
+.rank .text {
+  position: relative;
+  top: 12px;
+}
+.rank .name {
+  font-size: 48px;
+  padding: 0 12px;
+}
+.rank .score {
+  color: #666;
+  font-style: italic;
+}
+.rank .img {
+  width: 64px;
+  height: 64px;
+}
+.trophy {
+  margin-right: 12px;
+  height: 80px;
+}
+.btn-trophies {
+  margin-top: 6px;
+}

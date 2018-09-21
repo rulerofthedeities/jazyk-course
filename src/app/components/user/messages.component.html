@@ -1,0 +1,222 @@
+<div class="panel panel-default transparant">
+  <div class="panel-heading">
+    <span class="fa fa-spacing-title"
+      [ngClass]="{'fa-envelope-open-o': currentMessage || showNewMessage, 'fa-envelope-o': !(currentMessage || showNewMessage)}"></span>
+    {{currentMessage ? text["Message"] : (showNewMessage ? text["NewMessage"] : text["PrivateMessages"])}}
+    <!-- Action Buttons -->
+    <div class="btn-group pull-right" *ngIf="!currentMessage && !showNewMessage" #dropdown>
+      <button type="button"
+        (click)="onOpenActions()"
+        class="btn btn-primary dropdown-toggle">
+        <span class="fa fa-plus-circle fa-spacing"></span>{{text["Actions"]}} ({{getActionCount()}})
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu"
+        [style.display]="showActions ? 'block': 'none'">
+        <li *ngIf="tab==='inbox'"
+          (click)="onMarkAllRead()">
+          <a>
+            <button class="btn btn-warning btnicon">
+              <span class="fa fa-check fa-spacing"></span>
+            </button>
+            {{text["MarkAllRead"]}}
+          </a>
+        </li>
+        <li *ngIf="tab==='inbox'"
+          (click)="onDeleteAllRead()">
+          <a>
+            <button class="btn btn-danger btnicon">
+              <span class="fa fa-trash fa-spacing"></span>
+            </button>
+            {{text["DeleteAllReadMessages"]}}
+          </a>
+        </li>
+        <li *ngIf="tab==='trash'"
+          (click)="onEmptyTrash()">
+          <a>
+            <button class="btn btn-danger btnicon">
+              <span class="fa fa-trash-o fa-spacing"></span>
+            </button>
+            {{text["EmptyTrash"]}}
+          </a>
+        </li>
+        <li class="divider" *ngIf="tab!=='sent'"></li>
+        <li (click)="onCreateMessage()">
+          <a>
+            <button class="btn btn-primary btnicon">
+              <span class="fa fa-file-o fa-spacing"></span>
+            </button>
+            {{text["NewMessage"]}}
+          </a>
+        </li>
+      </ul>
+    </div>
+    <span
+      *ngIf="currentMessage || showNewMessage"
+      (click)='onCloseMessage()'
+      class="fa fa-times pull-right">
+    </span>
+  </div>
+  <div class="panel-body">
+    <!-- MESSAGE LIST -->
+    <div *ngIf="!currentMessage && !showNewMessage else messageDetail">
+      <ul class="nav nav-tabs">
+        <li
+          [class.active]="tab==='inbox'"
+          (click)="onSelectTab('inbox')">
+          <a>
+            <span class="fa fa-envelope fa-spacing"></span>
+            {{text["Inbox"]}}
+          </a>
+        </li>
+        <li
+          [class.active]="tab==='sent'"
+          (click)="onSelectTab('sent')">
+          <a>
+            <span class="fa fa-location-arrow fa-spacing"></span>
+            {{text["Sent"]}}
+          </a>
+        </li>
+        <li
+          [class.active]="tab==='trash'"
+          (click)="onSelectTab('trash')">
+          <a>
+            <span class="fa fa-trash fa-spacing"></span>
+            {{text["Trash"]}}
+          </a>
+        </li>
+      </ul>
+      <div *ngIf="messages && messages[0] else nomessages" class="messages">
+        <div class="list-group">
+          <a class="list-group-item"
+            *ngFor="let message of messages; let i=index"
+            (click)="onSelectMessage(i)">
+            <span class="fa fa-spacing"
+              *ngIf="isRecipient(message)"
+              [ngClass]="{
+              'fa-circle': !message.recipient.read,
+              'fa-circle-o': message.recipient.read}">
+            </span>
+            <span class="fa fa-spacing"
+              [class.fa-retweet]="message.parentId ? true : false"
+            ></span>
+            <span class="user truncate">
+              {{isRecipient(message) ? message.sender.userName : message.recipient.userName}}
+            </span>
+            <span
+              class="content truncate"
+              [class.unread]="!message.recipient.read && isRecipient(message)">
+              {{message.message}}
+            </span>
+            <button type="button" *ngIf="message.recipient.read || !isRecipient(message)"
+              class="btn btn-danger btn-xs btn-delete pull-right"
+              (click)="onDeleteMessage(message)">
+              <span class="fa fa-trash"></span>
+            </button>
+            <span class="badge" [class.badgeMargin]="!message.recipient.read">
+              {{message.dt | date: 'dd'}} {{text[message.dt | date: 'MMMM']}} {{message.dt | date: 'yyyy HH:mm'}}
+            </span>
+          </a>
+      </div>
+    </div>
+  </div>
+  <div  class="info-msg">
+    <km-info-msg [msg]="infoMsg">
+    </km-info-msg>
+  </div>
+</div>
+
+<ng-template #nomessages>
+  <div class="messages">
+    {{text["NoMessages"]}}
+  </div>
+</ng-template>
+
+<!-- MESSAGE DETAIL -->
+<ng-template #messageDetail>
+  <div class="message" *ngIf="!showNewMessage else newMessage"
+    kmPressed
+    (hasKeyPressed)="onKeyPressed($event)">
+    <div class="row">
+      <label
+        class="control-label col-xs-1">
+        {{text["From"]}}
+      </label>
+      <div class="col-xs-11">
+        <span class="gravatar">
+          <span *ngIf="currentMessage.sender.emailHash">
+            <img kmGravatar [hash]="currentMessage.sender.emailHash" [width]="16">
+          </span>
+        </span>
+        {{currentMessage.sender.userName}}
+      </div>
+    </div>
+    <div class="row">
+      <label
+        class="control-label col-xs-1">
+        {{text["To"]}}
+      </label>
+      <div class="col-xs-11">
+        <span class="gravatar">
+          <span *ngIf="currentMessage.recipient.emailHash">
+            <img kmGravatar [hash]="currentMessage.recipient.emailHash" [width]="16">
+          </span>
+        </span>
+        {{currentMessage.recipient.userName}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel-body">
+        <div class="message-content">
+          {{currentMessage.message}}
+          <div *ngIf="currentMessage.parentId && parentMessage" class="parent">
+            {{parentMessage.message}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="badge pull-right">
+      {{currentMessage.dt | date: "yyyy-MM-dd HH:mm"}}
+    </div>
+    <!-- BUTTONS -->
+    <div class="row buttons" *ngIf="!showReply">
+      <button type="button" *ngIf="isRecipient(currentMessage)"
+        class="btn btn-primary" (click)="onCreateReply(replyField)">
+        <span class="fa fa-reply"></span> {{text["Reply"]}}
+      </button>
+      <button type="button" *ngIf="tab==='inbox'"
+        class="btn btn-danger" (click)="onDeleteMessage(currentMessage)">
+        <span class="fa fa-trash"></span> {{text["Delete"]}}
+      </button>
+    </div>
+    <!-- REPLY -->
+    <div [style.display]="showReply ? 'block' : 'none'" class="reply">
+      <km-message
+        [sendTxt]="text['Send']"
+        (send)="onSendReply(currentMessage, $event)"
+        #replyField>
+      </km-message>
+    </div>
+  </div>
+</ng-template>
+
+<!-- NEW MESSAGE -->
+<ng-template #newMessage>
+  <div
+    kmPressed
+    (hasKeyPressed)="onKeyPressed($event)">
+    <km-user-selector *ngIf="recipients[0]"
+      [prefix]="text['To'] + ':'"
+      [users]="recipients"
+      [selectedUser]="selectedRecipient"
+      (userSelected)="onRecipientSelected($event, msgField)">
+    </km-user-selector>
+    <div [style.display]="selectedRecipient ? 'block' : 'none'">
+      <km-message
+        [sendTxt]="text['Send']"
+        (send)="onSendMessage($event)"
+        #msgField>
+      </km-message>
+    </div>
+  </div>
+</ng-template>

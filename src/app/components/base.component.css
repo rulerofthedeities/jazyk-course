@@ -1,0 +1,59 @@
+img { 
+  background-color: #fff;
+  background-size: cover; 
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -100;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  left: 50%;
+  height: auto;
+  width: auto;
+}
+.main {
+  margin-top: 12px;
+  margin-bottom: 32px;
+}
+.main.margin {
+  margin-top: 72px;
+}
+.background {
+  background-color: #41474b;
+  height: 100%;
+}
+/* ribbon */
+/* src: https://codepen.io/eode9/pen/twkKm */
+.corner-ribbon{
+  width: 200px;
+  background: #e43;
+  position: absolute;
+  top: 25px;
+  left: -50px;
+  text-align: center;
+  line-height: 30px;
+  letter-spacing: 1px;
+  color: #f0f0f0;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  z-index: 9000;
+}
+.corner-ribbon.sticky{
+  position: fixed;
+}
+.corner-ribbon.shadow{
+  box-shadow: 1px 1px 3px rgba(0,0,0,.5);
+}
+.corner-ribbon.top-right{
+  top: 25px;
+  right: -50px;
+  left: auto;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+.corner-ribbon.red{
+  background: #e43;
+}

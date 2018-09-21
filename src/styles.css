@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: WhiteSmoke;
+}
+.flag {
+  border: 1px solid #333;
+  border-radius: 3px;
+  width: 30px;
+  height: 20px;
+  margin-right: 3px;
+}
+.flag-from {
+  font-size: 10px;
+  margin: 2px;
+  position: relative;
+  top: -3px;
+  color: #666;
+}
+.transparant {
+  background-color: rgba(255, 255, 255, .93);
+}
+.more-transparant {
+  background-color: rgba(255, 255, 255, .8);
+}
+.green {
+  color: green;
+}
+.yellow {
+  color: yellow;
+}
+.orange {
+  color: orange;
+}
+.red {
+  color: red;
+}
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.msg-info {
+  font-size: 20px;
+  padding: 15px;
+}
+.msg-info .fa {
+  font-size: 36px;
+  margin-right: 12px;
+  color: green;
+}
+.fa-spacing {
+  margin-right: 6px;
+}
+.fa-spacing-title {
+  margin-right: 12px;
+}
+.btn {
+  margin-right: 3px;
+}
+
+/* ng2-dnd */
+
+.dnd-drag-start {
+  -moz-transform:scale(0.8);
+  -webkit-transform:scale(0.8);
+  transform:scale(0.8);
+  opacity:0.7;
+  border: 2px dashed #000;
+}
+
+.dnd-drag-enter {
+  opacity:0.7;
+  border: 2px dashed #000;
+}
+
+.dnd-drag-over {
+  border: 2px dashed #000;
+}
+
+.dnd-sortable-drag {
+  -moz-transform:scale(0.9);
+  -webkit-transform:scale(0.9);
+  transform:scale(0.9);
+  opacity:0.7;
+  border: 1px dashed #000;
+}

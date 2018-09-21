@@ -1,0 +1,20 @@
+<li class="list-group-item">
+  <span class="fa fa-circle"
+    [ngClass]="{
+      green: book.difficulty.weight <= weight,
+      red: book.difficulty.weight > weight}"
+    [tooltip]="tooltip"
+    [tooltipPlacement]="'top'">
+  </span>
+  <km-book-tpe class="tpe"
+    [tpe]="book.tpe"
+    [text]="text">
+  </km-book-tpe>
+  <button type="button" class="btn btn-primary pull-right start" (click)="onStartNewBook(book)">
+    {{isStarted ? text["ContinueReading"]: text["StartReading"]}}
+  </button>
+  <span class="title">{{book.title}}</span>
+  <span class="details">
+    ({{book.difficulty.nrOfSentences}} {{text["sentences"]}} / {{text["Difficulty"]}} {{difficultyPerc}}%)
+  </span>
+</li>

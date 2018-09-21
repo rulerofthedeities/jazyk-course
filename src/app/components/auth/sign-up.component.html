@@ -1,0 +1,111 @@
+<div class="panel panel-default more-transparant" *ngIf="isReady">
+  <div class="panel-body">
+    <div class="col-xs-6 col-xs-offset-3">
+      <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <span class="fa fa-user"></span>
+        {{text["Signup"]}}
+      </div>
+      <div class="altsign">
+        <a routerLink="/auth/signin">{{text["Login"]}}</a>
+      </div>
+    </div>
+    <div class="panel-body bg-info">
+      <form id="signupform"
+          [formGroup]="userForm"
+          class="form-horizontal"
+          role="form">
+        <div class="field">
+          <label for="username">
+            {{text["Username"]}}
+          </label>
+          <div class="input-group" [ngClass]="getIconClass('userName')">
+            <span class="input-group-addon">
+              <span class="fa fa-user"></span>
+            </span>
+            <input
+              id="username"
+              formControlName="userName"
+              type="text"
+              class="form-control input-lg"
+              [placeholder]="text['Enterusername'] || ''"
+              minlength="5"
+              maxlength="25"
+              autofocus
+              spellcheck="false"
+              autocomplete="off">
+          </div>
+          <km-field-messages
+            [control]="userForm.controls['userName']"
+            [label]="'TheUsername'"
+            [text]="text">
+          </km-field-messages>
+        </div>
+
+        <div class="field">
+          <label for="email">
+            {{text["Email"]}}
+          </label>
+          <div class="input-group" [ngClass]="getIconClass('email')">
+            <span class="input-group-addon">
+              <span class="fa fa-pencil"></span>
+            </span>
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              class="form-control input-lg"
+              [placeholder]="text['Enteremail'] || ''"
+              minlength="5"
+              maxlength="100"
+              spellcheck="false"
+              autocomplete="off">
+          </div>
+          <km-field-messages
+            [control]="userForm.controls['email']"
+            [label]="'Email'"
+            [text]="text">
+          </km-field-messages>
+        </div>
+
+
+        <div class="field">
+          <label for="password">
+            {{text["Password"]}}
+          </label>
+          <div class="input-group" [ngClass]="getIconClass('password')">
+            <span class="input-group-addon">
+              <span class="fa fa-key"></span>
+            </span>
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              class="form-control input-lg"
+              [placeholder]="text['Enterpw'] || ''"
+              minlength="5"
+              maxlength="100">
+          </div>
+          <km-field-messages
+            [control]="userForm.controls['password']"
+            [label]="'Password'"
+            [text]="text">
+          </km-field-messages>
+        </div>
+
+        <button
+          type="button"
+          [disabled]="!userForm.valid"
+          (click)="onSubmitForm(userForm.value)"
+          class="btn btn-success btn-lg center-block">
+          <span class="fa fa-hand-o-right register"></span> {{text["SignupAction"]}}
+        </button>
+
+        <km-error-msg [text]="text">
+        </km-error-msg>
+
+      </form>
+    </div>
+  </div>
+</div>

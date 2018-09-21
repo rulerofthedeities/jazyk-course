@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <title>Jazyk Course</title>
+    <base href="/">
+    <meta name="description" content="Jazyk, a unique language learning tool where you learn to master a language by reading.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="NysiyUp_QIE1-2m_nghb4tH-UKkSF_F9HUCu4JoMk0M">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- https://medium.com/@tomastrajan/how-to-style-angular-application-loading-with-angular-cli-like-a-boss-cdd4f5358554 -->
+    <!-- inline spinner styles to be able to display spinner right away -->
+    <style type="text/css">
+      body, html {
+        height: 100%;
+      }
+      .app-loading {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .app-loading .spinner {
+        height: 140px;
+        width: 140px;
+        animation: rotate 2s linear infinite;
+        transform-origin: center center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .app-loading .spinner .path {
+        stroke-dasharray: 1, 140;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite;
+        stroke-linecap: round;
+        stroke: #ddd;
+      }
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 140;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89, 140;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dasharray: 89, 140;
+          stroke-dashoffset: -124px;
+        }
+      }
+    </style>
+  <link rel="stylesheet" href="styles.7961844f2bbce4d5079a.css"></head>
+  <body>
+    <km-jazyk>
+      <!-- loading layout replaced by app after startupp -->
+      <div class="app-loading">
+        <div class="logo"></div>
+        <svg class="spinner" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"></circle>
+        </svg>
+      </div>
+    </km-jazyk>
+  
+
+<script type="text/javascript" src="runtime.8dd5fda41f173b4ed72c.js"></script><script type="text/javascript" src="polyfills.45366240f6f89f85c102.js"></script><script type="text/javascript" src="scripts.1e3de3eccc2dbd4e72dc.js"></script><script type="text/javascript" src="main.1ca78cb2821c01c89ddc.js"></script></body></html>

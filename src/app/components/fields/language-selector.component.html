@@ -1,0 +1,21 @@
+<div *ngIf="dataReady">
+  <div class="selector" [class.disabled]="disabled">
+    <div class="input-group col-xs-12">
+      <div class="btn btn-default btn-dropdown btn-lg" (click)="onToggleDropdown()">
+        <span class="caret" *ngIf="!disabled"></span>
+        <img src="/assets/img/flags/{{selectedLanguage?.code}}.png" alt="{{text[selectedLanguage?.name]}}" class="flag" />{{text[selectedLanguage?.name]}}
+      </div>
+    </div>
+    <ul class="list-group dropdown" *ngIf="showDropdown">
+      <li
+        class="list-group-item"
+        [ngClass]="{active:lan.code===selectedDropdown}"
+        *ngFor="let lan of languages"
+        (click)="onSelectLanguage(lan)"
+        (mouseover)="onHoverLanguage(lan)"
+        >
+        <img src="/assets/img/flags/{{lan.code}}.png" alt="{{text[lan.name]}}" class="flag" />{{text[lan.name]}}
+      </li>
+    </ul>
+  </div>
+</div>

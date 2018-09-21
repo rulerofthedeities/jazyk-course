@@ -1,0 +1,50 @@
+.btn-dropdown {
+  text-align: left;
+  width: 100%;
+  cursor: default;
+}
+.selector {
+  position: relative;
+  z-index: 10;
+}
+.dropdown {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 46px;
+}
+.flag {
+  border: 1px solid #999;
+  border-radius: 2px;
+  height: 20px;
+  margin-right: 8px;
+  width: 30px;
+}
+.gravatar {
+  border: 1px solid #999;
+  border-radius: 2px;
+  height: 22px;
+  margin-right: 8px;
+  width: 22px;
+}
+.caret {
+  float: right;
+  margin-top: 8px;
+}
+.list-group-item {
+  cursor: pointer;
+  font-size: 18px;
+}
+.disabled .btn-default{
+  cursor: default;
+  border: 0;
+  background-color: inherit;
+  padding-left: 0;
+}
+.disabled .btn-default:hover {
+  background-color: inherit;
+}
+.disabled .btn-default:active {
+  box-shadow: inherit;
+}

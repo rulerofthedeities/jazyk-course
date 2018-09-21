@@ -1,0 +1,127 @@
+<div class="row">
+  <!-- Summary -->
+  <div class="col-md-6 col-xs-12">
+    <div class="panel panel-default status transparant">
+      <div class="panel-heading">
+        <span class="fa fa-file-o fa-spacing-title"></span>
+        {{text["Summary"]}}
+      </div>
+      <div class="panel-body panel-summary">
+        <div *ngIf="summaryData">
+          <div class="rank info" (click)="onShowRankings(ranks)">
+            <img src="/assets/img/ranks/rank{{getRank()}}_64.png" class="img">
+            <span class="rank-name">{{getRankName()}}</span>
+          </div>
+          <div class="score info">
+            <a routerLink="/user/score" class="points">{{summaryData.score | score}} {{text["points"]}}</a>
+          </div>
+          <div class="learning info">
+            {{summaryData.booksReading.total}} {{summaryData.booksReading.total === 1 ? text["bookStarted"] : text["booksStarted"]}}<br>
+            {{summaryData.booksReading.completed}} {{summaryData.booksReading.completed === 1 ? text["bookCompleted"] : text["booksCompleted"]}}<br>
+            {{summaryData.coursesLearning.total}} {{summaryData.coursesLearning.total === 1 ? text["courseStarted"] : text["coursesStarted"]}}<br>
+            {{summaryData.coursesLearning.subscribed}} {{summaryData.coursesLearning.subscribed === 1 ? text["courseLearning"] : text["coursesLearning"]}}<br>
+          </div>
+        </div>
+        <km-loader *ngIf="isLoadingOverview && !isError"
+          [msg]="text['Loading']"
+          [showBackground]="false">
+        </km-loader>
+      </div>
+    </div>
+  </div>
+  <!-- Notification -->
+  <div class="col-md-6 col-xs-12">
+    <div class="panel panel-default notifications transparant">
+      <div class="panel-heading">
+        <span class="fa fa-envelope-open-o fa-spacing-title"></span>
+        {{text["Communication"]}}
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a class="list-group-item"
+            *ngFor="let message of communications; let i=index"
+            (click)="onSelectMessage(i)">
+            <span class="fa fa-spacing"
+              [ngClass]="{
+                'fa-envelope-o': message.tpe==='message',
+                'fa-bell-o': message.tpe==='notification'
+              }">
+            </span>
+            <span class="fa fa-spacing"
+              [ngClass]="{
+                'fa-circle': !message.read,
+                'fa-circle-o': message.read,
+                'fa-envelope-o': message.tpe==='message',
+                'fa-bell-o': message.tpe==='notification'
+              }">
+            </span>
+            <span class="user truncate">
+              {{message.from}}
+            </span>
+            <span
+              class="content truncate"
+              [class.unread]="!message.read">
+              {{message.message}}
+            </span>
+            <span class="badge">
+              {{getFromNow(message.dt)}}
+            </span>
+            <div class="clearfix"></div>
+          </a>
+        </div>
+        <km-loader *ngIf="isLoadingCommunication && !isError"
+          [msg]="text['Loading']"
+          [showBackground]="false">
+        </km-loader>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <!-- Recent courses -->
+  <div class="col-xs-12">
+    <div class="panel panel-default courses transparant">
+      <div class="panel-heading">
+        <span class="fa fa-book fa-spacing-title"></span>
+        {{text["RecentStudied"]}}
+      </div>
+      <div class="panel-body">
+        <div *ngIf="recentReady">
+          <ul class="list-unstyled" *ngIf="recent?.length">
+            <li *ngFor="let item of recent">
+              <km-course-summary *ngIf="item.tpe==='course'"
+                [course]="item['course']"
+                [lastActivity]="getFromNow(item.dt)"
+                [text]="text"
+                [tpe]="listType.Home">
+              </km-course-summary>
+              <km-book-summary *ngIf="item.tpe==='book'"
+                [book]="item['book']"
+                [userBook]="item['uBook']"
+                [userData]="item['sessions']"
+                [translationData]="item['translations']"
+                [userLanCode]="item['userLanCode']"
+                [text]="text"
+                [licenses]="licenses"
+                tpe="home">
+              </km-book-summary>
+            </li>
+          </ul>
+          <div *ngIf="!recent?.length">
+            {{text["NoRecentStudied"]}}
+          </div>
+        </div>
+        <km-loader *ngIf="isLoadingRecent && !isError"
+          [msg]="text['LoadingCourses']"
+          [showBackground]="false">
+        </km-loader>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<km-modal-ranks #ranks
+  [rank]="getRank()"
+  [text]="text">
+</km-modal-ranks>

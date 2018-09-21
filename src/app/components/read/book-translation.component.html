@@ -1,0 +1,106 @@
+<div class="panel panel-info"
+  kmPressed
+  (hasKeyPressed)="onKeyPressed($event)" *ngIf="showTranslations">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{text["Translations"]}}</h3>
+  </div>
+  <div class="panel-body">
+    <!-- TRANSLATIONS LIST -->
+    <div class="translations-container" *ngIf="translations.length">
+      <ul class="list-group">
+        <li
+          class="list-group-item translation-item"
+          *ngFor="let translation of translations, let i = index"
+          [style.color]="getColor(i, false)">
+          <button *ngIf="canEdit && translation.userId?.toString() === userId && isEditing !== i"
+            type="button"
+            class="btn btn-primary btn-sm pull-right edit-button"
+            (click)="onEditTranslation(i)">
+            <span class="fa fa-pencil"></span>
+          </button>
+          <div class="vote-block">
+            <span class="fa fa-pencil edit-icon" *ngIf="isEditing === i"></span>
+            {{i + 1}}.
+            <!-- Thumbs -->
+            <button
+              type="button"
+              class="btn btn-primary btn-sm btn-thumb"
+              [class.btn-up]="canThumb"
+              [class.thumbed-up]="thumbs[translation.elementId]?.user===true"
+              (click)="onThumb(true, translation)">
+              {{thumbs[translation.elementId]?.nrUp || 0}}
+              <span class="fa fa-thumbs-up" *ngIf="canThumb"></span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm btn-thumb"
+              [class.btn-down]="canThumb"
+              [class.thumbed-down]="thumbs[translation.elementId]?.user===false"
+              (click)="onThumb(false, translation)">
+              {{thumbs[translation.elementId]?.nrDown || 0}}
+              <span class="fa fa-thumbs-down" *ngIf="canThumb"></span>
+            </button>
+          </div>
+          <div class="translation-block">
+            {{translation.translation}}
+            <div *ngIf="translation.note"
+              class="translation-note"
+              [style.color]="getColor(i, true)">
+              ({{translation.note}})
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!translations.length">
+      {{text["NoTranslations"]}}
+    </div>
+
+    <!-- SUBMIT TRANSLATION -->
+    <div *ngIf="canEdit && !submitted">
+      {{!!translations.length ? text["BetterTranslation"] : text["GoodTranslation"]}}
+      {{text["EnterBelow"]}}
+      <div class="input-group new-translation">
+        <span class="input-group-addon">
+          <img src="/assets/img/flags/{{userLanCode}}.png" class="flag">
+          <div class="translation-new-note"></div>
+        </span>
+        <textarea type="text"
+          class="form-control"
+          autofocus
+          rows="3"
+          autocomplete=”off”
+          [placeholder]="getTranslationPlaceHolder()"
+          [(ngModel)]="translationEdit"
+          #translation="ngModel"
+        ></textarea>
+        <input type="text"
+          class="form-control"
+          [placeholder]="text['AddTranslationNote']"
+          autocomplete=”off”
+          [(ngModel)]="translationNote"
+          #tlnote="ngModel"
+        >
+        <span class="input-group-btn translation-send">
+          <button
+            type="button"
+            [disabled]="submitting"
+            class="btn btn-primary"
+            (click)="onAddUpdateTranslation(translation.value, tlnote.value)">
+            <span class="fa fa-envelope fa-spacing"></span>
+            {{isEditing !== null ? text["UpdateTranslation"] : text["SubmitTranslation"]}}
+          </button>
+        </span>
+      </div>
+      <div *ngIf="duplicate">
+        {{text["TranslationExists"]}}
+      </div>
+    </div>
+    <div *ngIf="submitted">
+      {{submitMsg}}
+    </div>
+  </div>
+</div>
+
+
